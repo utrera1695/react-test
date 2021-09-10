@@ -1,23 +1,31 @@
-import logo from './logo.svg';
-import './App.css';
-
+import {getPost} from "./services/post/post.service"
+import {useEffect, useState} from "react";
+import "./App.css"
 function App() {
+  const [products,setProducts] = useState([]);
+  const getpostData = () => {
+    getPost().then((response)=> {
+      setProducts(response.data);
+    }).catch(error => {
+      console.error()
+    })
+  }
+
+  useEffect(()=> {
+    getpostData()
+  },[])
+
+
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="product-list">
+      { products.map(product => {
+        return (
+            <div className="product">
+              <h1>{product.name}</h1>
+              <h6>{product.description}</h6>
+            </div>
+              )}) }
     </div>
   );
 }
